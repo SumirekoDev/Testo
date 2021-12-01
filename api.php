@@ -1,8 +1,8 @@
 <?php
     require "./config/db.php";
 
-    //$query = "SELECT * FROM usuario";
-    //$resultado = $db->query($query);
+    $query = "SELECT * FROM usuario";
+    $resultado = $db->query($query);
     
     $data = array();
 
