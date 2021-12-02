@@ -3,7 +3,7 @@
 
     $query = "SELECT * FROM usuario";
     $resultado = $db->query($query);
-    
+    //Hello there
     $data = array();
 
     //while($row = $resultado->fetch_assoc()){
