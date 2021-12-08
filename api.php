@@ -4,6 +4,7 @@
     $query = "SELECT * FROM usuario";
     $resultado = $db->query($query);
     //Hello there
+    //General Kenobi
     $data = array();
 
     //while($row = $resultado->fetch_assoc()){
@@ -15,6 +16,7 @@
     
     $failed = array('Error' => 'Failed');
     $consultaGet = isset($_GET['consulta']);
+    $mostrarGet = isset($_GET['mostrar']);
     $insertPost = isset($_POST['agregar']);
     $entradaPost = isset($_POST['entrada']);
     $salidaPost = isset($_POST['salida']);
@@ -164,6 +166,28 @@
             header('Content-type: application/json');
             $failed = array('error' => "No se encontro el vehiculo");
             echo json_encode($failed);
+        }
+    }elseif($mostrarGet && $_GET['mostrar'] == 'mostrarUsuarios'){
+        $estado = $_GET['estado'];
+        $stmt = $db->query("SELECT * FROM vehiculo WHERE estado = \"".$estado."\"");
+        if($stmt){
+            if($stmt -> num_rows > 0){
+                $stmt = $db->query("SELECT idUsuario, modelo, color FROM vehiculo WHERE estado = \"".$estado."\"");
+                $data = array();
+                $data[] = $stmt->fetch_assoc();
+                while($row = $stmt->fetch_assoc()){
+                    $data[] = $row;
+                }
+
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }else{
+                header('Content-type: application/json');
+                echo json_encode('No hay carros en el estacionamiento');
+            }
+        }else{
+            header('Content-type: application/json');
+            echo json_encode('Intente de nuevo');
         }
     }
 ?>
