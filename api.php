@@ -16,7 +16,8 @@
     
     $failed = array('Error' => 'Failed');
     $consultaGet = isset($_GET['consulta']);
-    $mostrarGet = isset($_GET['mostrar']);
+    $mostrarGet = isset($_GET['consulta']);
+    $registroGet = isset($_GET['consulta'])
     $insertPost = isset($_POST['agregar']);
     $entradaPost = isset($_POST['entrada']);
     $salidaPost = isset($_POST['salida']);
@@ -167,14 +168,11 @@
             $failed = array('error' => "No se encontro el vehiculo");
             echo json_encode($failed);
         }
-    }elseif($mostrarGet && $_GET['mostrar'] == 'mostrarUsuarios'){
-        $estado = $_GET['estado'];
-        $stmt = $db->query("SELECT * FROM vehiculo WHERE estado = \"".$estado."\"");
+    }elseif($mostrarGet && $_GET['consultar'] == 'mostrarUsuarios'){
+        $stmt = $db->query("SELECT * FROM usuario");
         if($stmt){
             if($stmt -> num_rows > 0){
-                $stmt = $db->query("SELECT idUsuario, modelo, color FROM vehiculo WHERE estado = \"".$estado."\"");
                 $data = array();
-                $data[] = $stmt->fetch_assoc();
                 while($row = $stmt->fetch_assoc()){
                     $data[] = $row;
                 }
@@ -183,11 +181,28 @@
                 echo json_encode($data);
             }else{
                 header('Content-type: application/json');
-                echo json_encode('No hay carros en el estacionamiento');
+                echo json_encode('error' => 'No hay carros en el estacionamiento');
             }
         }else{
             header('Content-type: application/json');
-            echo json_encode('Intente de nuevo');
+            echo json_encode('error' => 'Intente de nuevo');
+        }
+    }elseif($registroGet && $_GET['consultar'] == 'mostrarVehiculos'){
+        $stmt = $db->query("SELECT * FROM vehiculo");
+        if($stmt){
+            if($stmt->num_rows > 0){
+                $data = array();
+                while($row = $stmt-> fetch_assoc()){
+                    $data[] = $row;
+                }
+
+                header('Content-type: application/json');
+                echo json_encode($row);
+            }else{
+                echo json_encode('error' => 'No se encontraron vehiculos');
+            }
+        }else{
+            echo json_encode($failed);
         }
     }
 ?>
