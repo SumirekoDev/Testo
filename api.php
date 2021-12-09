@@ -1,9 +1,10 @@
 <?php
     require "./config/db.php";
 
-    //$query = "SELECT * FROM usuario";
-    //$resultado = $db->query($query);
-    
+    $query = "SELECT * FROM usuario";
+    $resultado = $db->query($query);
+    //Hello there
+    //General Kenobi
     $data = array();
 
     //while($row = $resultado->fetch_assoc()){
@@ -15,6 +16,8 @@
     
     $failed = array('Error' => 'Failed');
     $consultaGet = isset($_GET['consulta']);
+    $mostrarGet = isset($_GET['consulta']);
+    $registroGet = isset($_GET['consulta'])
     $insertPost = isset($_POST['agregar']);
     $entradaPost = isset($_POST['entrada']);
     $salidaPost = isset($_POST['salida']);
@@ -163,6 +166,42 @@
         }else{
             header('Content-type: application/json');
             $failed = array('error' => "No se encontro el vehiculo");
+            echo json_encode($failed);
+        }
+    }elseif($mostrarGet && $_GET['consultar'] == 'mostrarUsuarios'){
+        $stmt = $db->query("SELECT * FROM usuario");
+        if($stmt){
+            if($stmt -> num_rows > 0){
+                $data = array();
+                while($row = $stmt->fetch_assoc()){
+                    $data[] = $row;
+                }
+
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }else{
+                header('Content-type: application/json');
+                echo json_encode('error' => 'No hay usuarios registrados');
+            }
+        }else{
+            header('Content-type: application/json');
+            echo json_encode('error' => 'Intente de nuevo');
+        }
+    }elseif($registroGet && $_GET['consultar'] == 'mostrarVehiculos'){
+        $stmt = $db->query("SELECT * FROM vehiculo");
+        if($stmt){
+            if($stmt->num_rows > 0){
+                $data = array();
+                while($row = $stmt-> fetch_assoc()){
+                    $data[] = $row;
+                }
+
+                header('Content-type: application/json');
+                echo json_encode($row);
+            }else{
+                echo json_encode('error' => 'No se encontraron vehiculos');
+            }
+        }else{
             echo json_encode($failed);
         }
     }
