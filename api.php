@@ -181,7 +181,7 @@
                 echo json_encode($data);
             }else{
                 header('Content-type: application/json');
-                echo json_encode('error' => 'No hay carros en el estacionamiento');
+                echo json_encode('error' => 'No hay usuarios registrados');
             }
         }else{
             header('Content-type: application/json');
